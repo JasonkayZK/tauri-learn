@@ -1,5 +1,5 @@
-use tauri::App;
 use crate::event::emit::global::emit_global;
+use tauri::App;
 
 pub mod global;
 

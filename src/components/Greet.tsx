@@ -3,8 +3,6 @@
 import React, {Component} from "react";
 import {invoke} from "@tauri-apps/api";
 
-import "@/event/GlobalEvent";
-
 interface GreetProps {
     name: string;
 }
