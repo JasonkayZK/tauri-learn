@@ -1,40 +1,47 @@
 'use client'
 
-import React from "react";
+import React, {Component} from "react";
 import {invoke} from "@tauri-apps/api";
 
-export default class Greet extends React.Component {
+interface GreetProps {
+    name: string;
+}
 
-    props: {
-        name: string;
-    };
+interface GreetState {
+    greeting: string;
+}
 
-    state: {
-        greeting: string
-    }
+export default class Greet extends Component<GreetProps, GreetState> {
 
-    constructor(props: {name: string}) {
+    constructor(props: GreetProps) {
         super(props);
-
-        this.props = {
-            name: props.name
-        }
 
         this.state = {
             greeting: ''
         };
     }
 
-    async componentDidMount() {
-        const greeting = await invoke<string>('greet', {name: this.props.name});
-        this.setState({greeting: greeting});
+    componentDidMount() {
+        this.calculateGreet().then((resp) => this.setState({ greeting: resp}));
+    }
+
+    async calculateGreet(): Promise<string> {
+        return invoke<string>('greet', {name: this.props.name})
+            .then(resp => {
+                return resp
+            })
+            .catch(err => {
+                return err
+            });
     }
 
     render() {
+        const { greeting } = this.state;
+
         return (
-            <h1>
-                {this.state.greeting}
-            </h1>
-        )
+            <div>
+                <h1>{greeting}</h1>
+            </div>
+        );
     }
 }

@@ -1,7 +1,8 @@
 import styles from './page.module.css'
 import Greet from "@/app/components/Greet";
-import ErrorHandle from "@/app/components/ErrorHandle";
+import React from "react";
 import AsyncCommand from "@/app/components/AsyncCommand";
+import ErrorHandle from "@/app/components/ErrorHandle";
 
 export default function Home() {
     return (

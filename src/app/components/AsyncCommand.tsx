@@ -3,22 +3,18 @@
 import React from "react";
 import {invoke} from "@tauri-apps/api";
 
-export default class AsyncCommand extends React.Component {
+interface AsyncCommandProps {
+    bound: number
+}
 
-    props!: {
-        bound: number
-    }
+interface AsyncCommandState {
+    msg: string
+}
 
-    state: {
-        msg: string
-    }
+export default class AsyncCommand extends React.Component<AsyncCommandProps, AsyncCommandState> {
 
     constructor(props: any) {
         super(props);
-
-        this.props = {
-            bound: props.bound
-        };
 
         this.state = {
             msg: ''
@@ -26,9 +22,10 @@ export default class AsyncCommand extends React.Component {
     }
 
     async componentDidMount() {
-        let msg = await invoke('async_command', {value: 'Solution of 1+..+' + this.props.bound, bound: this.props.bound})
+        let msg = await invoke('async_command',
+            {value: 'Solution of 1+..+' + this.props.bound, bound: this.props.bound})
             .then((res) => {
-                return res;
+                return res as string;
             })
             .catch((err) => {
                 return err;

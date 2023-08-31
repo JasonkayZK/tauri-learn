@@ -3,11 +3,15 @@
 import React from "react";
 import {invoke} from "@tauri-apps/api";
 
-export default class ErrorHandle extends React.Component {
 
-    state: {
-        msg: string
-    }
+interface ErrorHandleProps {
+}
+
+interface ErrorHandleState {
+    msg: string
+}
+
+export default class ErrorHandle extends React.Component<ErrorHandleProps, ErrorHandleState> {
 
     constructor(props: any) {
         super(props);
@@ -21,7 +25,7 @@ export default class ErrorHandle extends React.Component {
 
         let msg = await invoke('error_handle_command')
             .then((message) => {
-                return message;
+                return message as string;
             })
             .catch((error) => {
                 return error;
