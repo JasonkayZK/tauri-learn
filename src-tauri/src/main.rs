@@ -1,46 +1,25 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}!", name)
-}
+use tauri::Manager;
 
-#[tauri::command]
-fn error_handle_command() -> Result<String, String> {
-    // If something fails
-    Err("This failed!".into())
+use crate::command::async_command::async_command;
+use crate::command::error_handle::error_handle_command;
+use crate::command::get_window::get_window_command;
+use crate::command::greet::greet;
+use crate::event::emit::register_all_emit;
+use crate::event::listener::register_all_listener;
 
-    // If it worked
-    // Ok("This worked!".into())
-}
-
-// Return a Result<String, ()> to bypass the borrowing issue
-#[tauri::command]
-async fn async_command(value: &str, bound: i32) -> Result<String, ()> {
-    // Call another async function and wait for it to finish
-    let res = some_async_function(bound).await;
-
-    // Note that the return value must be wrapped in `Ok()` now.
-    Ok(format!("{}, res: {}", value, res))
-}
-
-async fn some_async_function(bound: i32) -> i32 {
-    let mut res = 0;
-    for i in 0..=bound {
-        res += i;
-    }
-    res
-}
-
-#[tauri::command]
-async fn get_window_command(window: tauri::Window) {
-    println!("Window: {}", window.label());
-}
+mod command;
+mod event;
 
 fn main() {
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![
+    let commands = tauri::Builder::default()
+        .setup(|app| {
+            register_all_emit(app);
+            register_all_listener(app);
+            Ok(())
+        }).invoke_handler(tauri::generate_handler![
             greet,
             error_handle_command,
             async_command,
