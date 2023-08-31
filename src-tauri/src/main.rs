@@ -14,6 +14,7 @@ mod event;
 fn main() {
     tauri::Builder::default()
         .setup(|app| {
+            // Don't emit messages when setup, the message may lost!!!!
             register_all_listener(app);
             register_all_emit(app);
             Ok(())

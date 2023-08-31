@@ -1,5 +1,3 @@
-'use client'
-
 import React from "react";
 import {invoke} from "@tauri-apps/api";
 

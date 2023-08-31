@@ -4,6 +4,8 @@ import Greet from "@/components/Greet";
 import ErrorHandle from "@/components/ErrorHandle";
 import AsyncCommand from "@/components/AsyncCommand";
 
+import "@/event/GlobalEvent";
+
 function App() {
     return (
         <div className="App">
