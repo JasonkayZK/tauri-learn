@@ -1,4 +1,5 @@
 use std::{thread, time};
+
 use tauri::{App, Manager};
 
 const EVENT_NAME: &str = "global-event-front";
